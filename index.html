@@ -14,6 +14,7 @@
 <meta property="og:url" content="https://200.health/">
 <meta property="og:site_name" content="200.Health">
 <link rel="icon" href="/assets/favicon.png" type="image/png" sizes="180x180">
+  <link rel="preload" href="assets/media/licensed-nurses.mp4" as="video" type="video/mp4">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <meta property="og:image" content="https://200.health/assets/og-image.jpg">
 <meta property="og:image:width" content="1024">
@@ -186,6 +187,7 @@ body.menu-open .hdr{opacity:0;pointer-events:none}
 /* ---------------- hero ---------------- */
 .hero{padding:clamp(10px,1.4vw,18px) var(--pad) 0;touch-action:pan-y}
 .hero-in{max-width:1440px;margin:0 auto}
+.hero-stage .slide--video{background:#0a2540}
 .hero-stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
 .hero-stage{position:relative;border-radius:var(--r-xl);overflow:hidden;background:var(--surface-2);
   height:clamp(400px,46vw,660px);box-shadow:var(--shadow-premium);border:1px solid rgba(227,233,239,.8);
@@ -193,10 +195,9 @@ body.menu-open .hdr{opacity:0;pointer-events:none}
 .slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .9s ease,visibility .9s}
 .slide.on{opacity:1;visibility:visible}
 .slide img{width:100%;height:100%;object-fit:cover;object-position:center 42%}
-.slide:nth-child(1) img{object-position:center 16%}
-.slide:nth-child(2) img{object-position:center 44%}
-.slide:nth-child(3) img{object-position:center 20%}
-.slide:nth-child(4) img{object-position:center 22%}
+.slide:nth-child(2) img{object-position:center 16%}
+.slide:nth-child(3) img{object-position:center 44%}
+.slide:nth-child(4) img{object-position:center 20%}
 .slide::after{content:"";position:absolute;inset:0;
   background:linear-gradient(to top,rgba(7,22,42,.34),rgba(7,22,42,.04) 46%,rgba(7,22,42,.16))}
 .hero-badge{position:absolute;top:clamp(16px,2vw,26px);left:clamp(16px,2vw,26px);z-index:3}
@@ -372,6 +373,14 @@ body.menu-open .hdr{opacity:0;pointer-events:none}
 .app-shot{max-width:440px;margin:clamp(24px,2.8vw,40px) auto -5%}
 .app-shot img{width:100%;border-radius:var(--r-lg) var(--r-lg) 0 0;box-shadow:0 -30px 70px -30px rgba(10,37,64,.28)}
 
+/* app widgets showcase */
+.app-widgets-sec{background:linear-gradient(180deg,#fff 0%,var(--sky-wash) 100%)}
+.app-widgets-head{text-align:center;max-width:720px;margin:0 auto}
+.app-widgets-head .stack-lead{margin-left:auto;margin-right:auto}
+.app-widgets-visual{margin-top:clamp(36px,4.5vw,56px);border-radius:var(--r-xl);overflow:hidden;
+  box-shadow:var(--shadow-premium);border:1px solid rgba(227,233,239,.9);background:#fff}
+.app-widgets-visual img{display:block;width:100%;height:auto}
+
 /* footer */
 .ft{background:var(--navy);color:rgba(255,255,255,.72);margin-top:clamp(56px,7vw,104px);
   padding:clamp(50px,6vw,86px) 0 32px;font-size:14.5px}
@@ -399,7 +408,7 @@ body.menu-open .hdr{opacity:0;pointer-events:none}
 .fine-more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s ease}
 .fine[data-open="true"] .fine-more{grid-template-rows:1fr}
 .fine-more>div{overflow:hidden}
-.ft-tag{font-family:var(--display);font-weight:700;color:rgba(255,255,255,.15);
+.ft-tag{font-family:var(--display);font-weight:700;color:#fff;
   font-size:clamp(23px,4.4vw,56px);letter-spacing:-.035em;line-height:1;
   border-top:1px solid rgba(255,255,255,.13);margin-top:30px;padding-top:30px}
 .ft-base{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;padding-top:22px;
@@ -730,6 +739,10 @@ textarea.bk-input{resize:vertical;line-height:1.55}
 <section class="hero" id="heroSwipe" aria-label="Featured programmes">
   <div class="hero-in">
     <div class="hero-stage" id="stage">
+      <div class="slide slide--video on" data-slide>
+        <video src="assets/media/licensed-nurses.mp4" preload="auto" autoplay muted loop playsinline aria-label="Licensed nurses at home"></video>
+        <span class="hero-badge pill"><i></i>Licensed nurses</span>
+      </div>
       <div class="slide" data-slide>
         <img src="assets/media/clinician-supervised.png" alt="Clinician supervised care">
         <span class="hero-badge pill"><i></i>Clinician supervised</span>
@@ -742,14 +755,17 @@ textarea.bk-input{resize:vertical;line-height:1.55}
         <img src="assets/media/pharmacy-delivered.png" alt="Pharmacy delivered to your door">
         <span class="hero-badge pill"><i></i>Pharmacy delivered</span>
       </div>
-      <div class="slide on" data-slide>
-        <video src="assets/media/licensed-nurses.mp4" autoplay muted loop playsinline poster="assets/media/clinician-supervised.png" aria-label="Licensed nurses at home"></video>
-        <span class="hero-badge pill"><i></i>Licensed nurses</span>
-      </div>
+      
       <div class="hero-dots" id="dots" role="tablist" aria-label="Change slide"></div>
     </div>
 
     <div class="hero-copy">
+      <div data-copy class="on">
+        <h1 class="h-1">Drips at home, run by real nurses.</h1>
+        <p>Hydration, NAD+ and recovery infusions set up at your counter, usually within the hour.</p>
+        <button class="btn btn-navy" data-book="IV or NAD+ drip">Book an IV drip
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+      </div>
       <div data-copy>
         <h1 class="h-1">A peptide protocol built for one person. You.</h1>
         <p>Doctor designed stacks, dosing written in units you can actually read, delivered cold to your door across the UAE.</p>
@@ -766,11 +782,6 @@ textarea.bk-input{resize:vertical;line-height:1.55}
         <h1 class="h-1">Pharmacy delivered, cold and tracked.</h1>
         <p>Prescriptions fulfilled and delivered to your door across Dubai and Abu Dhabi, with the same clinical oversight as an in-clinic visit.</p>
         <button class="btn btn-navy" data-book="Home care visit">Book home care
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
-      </div><div data-copy>
-        <h1 class="h-1">Drips at home, run by real nurses.</h1>
-        <p>Hydration, NAD+ and recovery infusions set up at your counter, usually within the hour.</p>
-        <button class="btn btn-navy" data-book="IV or NAD+ drip">Book an IV drip
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
       </div>
     </div>
@@ -864,6 +875,19 @@ textarea.bk-input{resize:vertical;line-height:1.55}
         <p>100+ biomarkers, trends over time and answers when you need them.</p>
       </a>
     </div>
+  </div>
+</section>
+
+<section class="sec app-widgets-sec" aria-label="200.Health mobile app">
+  <div class="wrap">
+    <div class="app-widgets-head rv">
+      <p class="stack-eyebrow"><img src="assets/icons/icon-dark-09.png" alt="" width="18" height="18">In the 200.Health app</p>
+      <h2 class="h-2 stack-title">Your health, decoded in your pocket.</h2>
+      <p class="stack-lead">Track daily streaks, biological age, and 100+ biomarkers from one dashboard. The app turns complex lab data into clear widgets — health scores, goal progress, and physician summaries you can act on between visits.</p>
+    </div>
+    <figure class="app-widgets-visual rv">
+      <img src="assets/media/app-widgets.jpg" alt="200.Health app widgets showing streak tracking, biological age, biomarker panels, blood results, and health score" width="1024" height="678" loading="lazy" decoding="async">
+    </figure>
   </div>
 </section>
 
@@ -1206,7 +1230,14 @@ textarea.bk-input{resize:vertical;line-height:1.55}
   var dots=[].slice.call(dotBox.children);
   function go(i){
     cur=(i+slides.length)%slides.length;
-    slides.forEach(function(s,n){ s.classList.toggle('on', n===cur); });
+    slides.forEach(function(s,n){
+      s.classList.toggle('on', n===cur);
+      var v=s.querySelector('video');
+      if(v){
+        if(n===cur){ v.play().catch(function(){}); }
+        else{ v.pause(); }
+      }
+    });
     copies.forEach(function(c,n){ c.classList.toggle('on', n===cur); });
     dots.forEach(function(d,n){
       d.removeAttribute('aria-current');
@@ -1216,7 +1247,7 @@ textarea.bk-input{resize:vertical;line-height:1.55}
     if(timer) clearTimeout(timer);
     if(!RM) timer=setTimeout(function(){ go(cur+1); }, 6000);
   }
-  go(3);
+  go(0);
   stage.addEventListener('mouseenter', function(){ if(timer) clearTimeout(timer); });
   stage.addEventListener('mouseleave', function(){ if(!RM) timer=setTimeout(function(){ go(cur+1); }, 2500); });
   var swipeEl=document.getElementById('heroSwipe')||stage;
