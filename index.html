@@ -141,6 +141,17 @@ body.menu-open .app-bar{opacity:0;pointer-events:none}
   color:var(--navy);padding:9px 13px;border-radius:999px;transition:background .2s}
 .loc:hover{background:var(--surface-2)}
 .loc svg{width:14px;height:14px;color:var(--red)}
+.loc .chev{width:11px;height:11px;color:var(--label);transition:transform .25s}
+.loc-wrap{position:relative;flex:none}
+.loc-wrap[data-open="true"] .loc{background:var(--surface-2)}
+.loc-wrap[data-open="true"] .loc .chev{transform:rotate(180deg)}
+.loc-drop{position:absolute;top:calc(100% + 8px);right:0;min-width:210px;background:#fff;border:1px solid var(--line);
+  border-radius:var(--r-lg);padding:6px;box-shadow:var(--shadow-2);opacity:0;visibility:hidden;
+  transform:translateY(-6px);transition:.22s;z-index:120}
+.loc-wrap[data-open="true"] .loc-drop{opacity:1;visibility:visible;transform:none}
+.loc-drop button{display:block;width:100%;text-align:left;padding:10px 12px;border-radius:10px;
+  font-family:var(--display);font-weight:500;font-size:14px;color:var(--navy);transition:background .18s}
+.loc-drop button:hover,.loc-drop button[aria-selected="true"]{background:var(--sky-wash)}
 .burger{display:none;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);place-items:center;flex:none}
 .burger svg{width:19px;height:19px}
 
@@ -674,8 +685,20 @@ textarea.bk-input{resize:vertical;line-height:1.55}
     </nav>
 
     <div class="hdr-right">
-      <button class="loc"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l9 20-9-5-9 5z"/></svg><span>Dubai</span>
-        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 8l7 7 7-7"/></svg></button>
+      <div class="loc-wrap" data-loc>
+        <button class="loc" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="locMenu">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l9 20-9-5-9 5z"/></svg><span id="locLabel">Dubai</span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 8l7 7 7-7"/></svg></button>
+        <div class="loc-drop" id="locMenu" role="listbox" aria-label="Select emirate">
+          <button type="button" role="option" data-city="Dubai">Dubai</button>
+          <button type="button" role="option" data-city="Abu Dhabi">Abu Dhabi</button>
+          <button type="button" role="option" data-city="Sharjah">Sharjah</button>
+          <button type="button" role="option" data-city="Ajman">Ajman</button>
+          <button type="button" role="option" data-city="Ras Al Khaimah">Ras Al Khaimah</button>
+          <button type="button" role="option" data-city="Fujairah">Fujairah</button>
+          <button type="button" role="option" data-city="Umm Al Quwain">Umm Al Quwain</button>
+        </div>
+      </div>
       <button class="btn btn-red btn-sm" data-book>Book care</button>
       <button class="burger" id="burger" aria-expanded="false" aria-controls="sheet" aria-label="Open menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
@@ -1399,6 +1422,44 @@ window.SITE = {
     item.addEventListener('focusout', function(e){ if(!item.contains(e.relatedTarget)) set(false); });
   });
 
+  /* ---------- city picker ---------- */
+  (function(){
+    var wrap=document.querySelector('[data-loc]');
+    if(!wrap) return;
+    var btn=wrap.querySelector('.loc');
+    var label=document.getElementById('locLabel');
+    var KEY='200health-emirate';
+    function setOpen(v){
+      wrap.setAttribute('data-open', v?'true':'false');
+      btn.setAttribute('aria-expanded', v?'true':'false');
+    }
+    function pick(city){
+      if(label) label.textContent=city;
+      $$('[data-loc] [role="option"]').forEach(function(o){
+        o.setAttribute('aria-selected', o.getAttribute('data-city')===city?'true':'false');
+      });
+      try{ localStorage.setItem(KEY, city); }catch(e){}
+      var sel=document.getElementById('bkEmirate');
+      if(sel){
+        [].slice.call(sel.options).forEach(function(o){
+          if(o.text===city) sel.value=o.value||o.text;
+        });
+      }
+      setOpen(false);
+    }
+    var saved='Dubai';
+    try{ saved=localStorage.getItem(KEY)||saved; }catch(e){}
+    pick(saved);
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      setOpen(wrap.getAttribute('data-open')!=='true');
+    });
+    $$('[data-loc] [role="option"]').forEach(function(o){
+      o.addEventListener('click', function(){ pick(o.getAttribute('data-city')); });
+    });
+    document.addEventListener('click', function(e){ if(!wrap.contains(e.target)) setOpen(false); });
+  })();
+
   /* ---------- mobile sheet ---------- */
   var sheet=$('#sheet'), scrim=$('#scrim'), burger=$('#burger');
   function openSheet(v){
@@ -1609,7 +1670,8 @@ window.SITE = {
     });
     document.addEventListener('keydown', function(e){
       if(e.key==='Escape'){ open(false); openSheet(false);
-        $$('[data-drop]').forEach(function(i){ i.setAttribute('data-open','false'); }); }
+        $$('[data-drop]').forEach(function(i){ i.setAttribute('data-open','false'); });
+        $$('[data-loc]').forEach(function(i){ i.setAttribute('data-open','false'); }); }
       if(e.key==='Tab' && bk.classList.contains('open')){
         var f=$$('button, input, select, textarea, a[href]', bk).filter(function(el){ return el.offsetParent!==null && !el.disabled; });
         if(!f.length) return;
