@@ -730,7 +730,7 @@ textarea.bk-input{resize:vertical;line-height:1.55}
 <section class="hero" id="heroSwipe" aria-label="Featured programmes">
   <div class="hero-in">
     <div class="hero-stage" id="stage">
-      <div class="slide on" data-slide>
+      <div class="slide" data-slide>
         <img src="assets/media/clinician-supervised.png" alt="Clinician supervised care">
         <span class="hero-badge pill"><i></i>Clinician supervised</span>
       </div>
@@ -742,7 +742,7 @@ textarea.bk-input{resize:vertical;line-height:1.55}
         <img src="assets/media/pharmacy-delivered.png" alt="Pharmacy delivered to your door">
         <span class="hero-badge pill"><i></i>Pharmacy delivered</span>
       </div>
-      <div class="slide" data-slide>
+      <div class="slide on" data-slide>
         <video src="assets/media/licensed-nurses.mp4" autoplay muted loop playsinline poster="assets/media/clinician-supervised.png" aria-label="Licensed nurses at home"></video>
         <span class="hero-badge pill"><i></i>Licensed nurses</span>
       </div>
@@ -1216,7 +1216,7 @@ textarea.bk-input{resize:vertical;line-height:1.55}
     if(timer) clearTimeout(timer);
     if(!RM) timer=setTimeout(function(){ go(cur+1); }, 6000);
   }
-  go(0);
+  go(3);
   stage.addEventListener('mouseenter', function(){ if(timer) clearTimeout(timer); });
   stage.addEventListener('mouseleave', function(){ if(!RM) timer=setTimeout(function(){ go(cur+1); }, 2500); });
   var swipeEl=document.getElementById('heroSwipe')||stage;
